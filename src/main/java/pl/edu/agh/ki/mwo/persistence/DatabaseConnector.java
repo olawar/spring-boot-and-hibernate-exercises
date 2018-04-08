@@ -41,7 +41,7 @@ public class DatabaseConnector {
 		
 		return schools;
 	}
-		
+	
 	public Iterable<SchoolClass> getSchoolClasses() {
 		
 		String hql = "FROM SchoolClass";
@@ -58,6 +58,66 @@ public class DatabaseConnector {
 		List students = query.list();
 		
 		return students;
+	}
+	
+	public School getSchool(String schoolId) {
+		String hql = "FROM School S WHERE S.id=" + schoolId;
+		Query query = session.createQuery(hql);
+		School school =  (School) query.uniqueResult();
+		
+		return school;
+	}
+	
+	public SchoolClass getSchoolClass(String schoolClassId) {
+		String hql = "FROM SchoolClass S WHERE S.id=" + schoolClassId;
+		Query query = session.createQuery(hql);
+		SchoolClass schoolClass =  (SchoolClass) query.uniqueResult();
+		
+		return schoolClass;
+	}
+	
+	public Student getStudent(String studentId) {
+		String hql = "FROM Student S WHERE S.id=" + studentId;
+		Query query = session.createQuery(hql);
+		Student student =  (Student) query.uniqueResult();
+		
+		return student;
+	}
+	
+	public void updateSchool(String schoolId, String address, String name) {
+		String hql = "FROM School S WHERE S.id=" + schoolId;
+		Query query = session.createQuery(hql);
+		School school =  (School) query.uniqueResult();
+		school.setAddress(address);
+		school.setName(name);
+		Transaction transaction = session.beginTransaction();
+		session.update(school);
+		transaction.commit();
+	}
+	
+	public void updateSchoolClass(String schoolClassId, String profile, int startYear, int currentYear) {
+		String hql = "FROM SchoolClass S WHERE S.id=" + schoolClassId;
+		Query query = session.createQuery(hql);
+		SchoolClass schoolClass = (SchoolClass) query.uniqueResult();
+		schoolClass.setProfile(profile);
+		schoolClass.setStartYear(startYear);
+		schoolClass.setCurrentYear(currentYear);
+		Transaction transaction = session.beginTransaction();
+		session.update(schoolClass);
+		transaction.commit();
+	}
+	
+	public void updateStudent(String studentId, String name, String surname, String pesel) {
+		String hql = "FROM Student S WHERE S.id=" + studentId;
+		Query query = session.createQuery(hql);
+		Student student = (Student) query.uniqueResult();
+		student.setName(name);
+		student.setSurname(surname);
+		student.setPesel(pesel);
+	
+		Transaction transaction = session.beginTransaction();
+		session.update(student);
+		transaction.commit();
 	}
 	
 	public void addSchool(School school) {

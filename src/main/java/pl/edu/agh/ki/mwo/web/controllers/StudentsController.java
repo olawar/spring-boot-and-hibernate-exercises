@@ -65,6 +65,31 @@ public class StudentsController {
          	
     	return "studentsList";
     }
-
-
+    
+    @RequestMapping(value="/ModifyStudent")
+    public String modifyStudent(@RequestParam(value="studentId", required=true) String studentId,
+    		Model model, HttpSession session) {    	
+    	if (session.getAttribute("userLogin") == null)
+    		return "redirect:/Login";
+    	
+    	model.addAttribute("student", DatabaseConnector.getInstance().getStudent(studentId));
+    	
+    	return "studentModifyForm";
+    }
+    
+    @RequestMapping(value="/UpdateStudent", method=RequestMethod.POST)
+    public String updateStudent(@RequestParam(value="studentName", required=false) String name,
+    		@RequestParam(value="studentSurname", required=false) String surname,
+    		@RequestParam(value="studentPesel", required=false) String pesel,
+    		@RequestParam(value="studentId", required=false) String studentId,
+    		Model model, HttpSession session) {    	
+    	if (session.getAttribute("userLogin") == null)
+    		return "redirect:/Login";
+    	
+    	DatabaseConnector.getInstance().updateStudent(studentId, name, surname, pesel);    	
+       	model.addAttribute("students", DatabaseConnector.getInstance().getStudents());
+    	model.addAttribute("message", "Dane ucznia zostały zaktualizowane");
+         	
+    	return "studentsList";
+    }
 }

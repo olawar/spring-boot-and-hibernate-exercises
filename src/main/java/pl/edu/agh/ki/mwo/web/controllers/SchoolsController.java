@@ -62,6 +62,30 @@ public class SchoolsController {
          	
     	return "schoolsList";
     }
-
-
+    
+    @RequestMapping(value="/ModifySchool")
+    public String modifySchool(@RequestParam(value="schoolId", required=true) String schoolId,
+    		Model model, HttpSession session) {    	
+    	if (session.getAttribute("userLogin") == null)
+    		return "redirect:/Login";
+    	
+    	model.addAttribute("school", DatabaseConnector.getInstance().getSchool(schoolId));
+    	
+    	return "schoolModifyForm";
+    }
+    
+    @RequestMapping(value="/UpdateSchool", method=RequestMethod.POST)
+    public String updateSchool(@RequestParam(value="schoolName", required=false) String name,
+    		@RequestParam(value="schoolAddress", required=false) String address,
+    		@RequestParam(value="schoolId", required=false) String schoolId,
+    		Model model, HttpSession session) {    	
+    	if (session.getAttribute("userLogin") == null)
+    		return "redirect:/Login";
+    	
+    	DatabaseConnector.getInstance().updateSchool(schoolId, address, name);    	
+       	model.addAttribute("schools", DatabaseConnector.getInstance().getSchools());
+    	model.addAttribute("message", "Dane szkoły zostały zaktualizowane");
+         	
+    	return "schoolsList";
+    }
 }

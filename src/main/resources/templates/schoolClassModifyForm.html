@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+<body>
+
+<div layout:fragment="content">
+  <div th:include="menuFragment"></div>
+  <br/><br/>
+  <form action="UpdateSchoolClass" method="POST">
+    <table>
+      <tr>
+        <td>profil:</td>
+        <td><input type="text" name="schoolClassProfile" th:value="${schoolClass.profile}"/></td>
+      </tr>
+      <tr>
+        <td>rok rozpoczecia:</td>
+        <td><input type="text" name="schoolClassStartYear"  th:value="${schoolClass.startYear}"/></td>
+      </tr>
+      <tr>
+        <td>rok obecny:</td>
+        <td><input type="text" name="schoolClassCurrentYear"  th:value="${schoolClass.currentYear}"/></td>
+      </tr>
+    </table>
+    <br/><br/>
+    <input type="hidden" name="schoolClassId" th:value="${schoolClass.id}"/>
+    <input type="submit" value="Aktualizuj"/>
+  </form>
+</div>
+
+</body>
+</html>
+
+

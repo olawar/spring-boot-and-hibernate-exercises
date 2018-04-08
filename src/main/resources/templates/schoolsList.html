@@ -21,6 +21,10 @@
       <td><span th:text="${school.name}"/></td>
       <td><span th:text="${school.address}"/></td>
       <td>
+        <form action="ModifySchool" method="POST">
+          <input type="hidden" name="schoolId" th:value="${school.id}"/>
+          <button type="submit">Modyfikuj</button>
+        </form>
         <form action="DeleteSchool" method="POST">
           <input type="hidden" name="schoolId" th:value="${school.id}"/>
           <button type="submit">X</button>
