@@ -21,6 +21,8 @@ public class StudentsController {
     		return "redirect:/Login";
 
     	model.addAttribute("students", DatabaseConnector.getInstance().getStudents());
+    	model.addAttribute("schools", DatabaseConnector.getInstance().getSchools());
+    	model.addAttribute("schoolClasses", DatabaseConnector.getInstance().getSchoolClasses());
     	
         return "studentsList";    
     }
@@ -30,6 +32,8 @@ public class StudentsController {
     	if (session.getAttribute("userLogin") == null)
     		return "redirect:/Login";
     	
+    	model.addAttribute("schoolClasses", DatabaseConnector.getInstance().getSchoolClasses());
+    	
         return "studentForm";    
     }
 
@@ -37,6 +41,7 @@ public class StudentsController {
     public String createSchool(@RequestParam(value="studentName", required=false) String name,
     		@RequestParam(value="studentSurname", required=false) String surname,
     		@RequestParam(value="studentPesel", required=false) String pesel,
+    		@RequestParam(value="schoolClass", required=false) String classId,
     		Model model, HttpSession session) {    	
     	if (session.getAttribute("userLogin") == null)
     		return "redirect:/Login";
@@ -46,7 +51,7 @@ public class StudentsController {
     	student.setSurname(surname);
     	student.setPesel(pesel);
     	
-    	DatabaseConnector.getInstance().addStudent(student);    	
+    	DatabaseConnector.getInstance().addStudent(student, classId);    	
        	model.addAttribute("students", DatabaseConnector.getInstance().getStudents());
     	model.addAttribute("message", "Nowy uczeń został dodany");
          	
@@ -73,6 +78,7 @@ public class StudentsController {
     		return "redirect:/Login";
     	
     	model.addAttribute("student", DatabaseConnector.getInstance().getStudent(studentId));
+    	model.addAttribute("schoolClasses", DatabaseConnector.getInstance().getSchoolClasses());
     	
     	return "studentModifyForm";
     }
@@ -82,11 +88,12 @@ public class StudentsController {
     		@RequestParam(value="studentSurname", required=false) String surname,
     		@RequestParam(value="studentPesel", required=false) String pesel,
     		@RequestParam(value="studentId", required=false) String studentId,
+    		@RequestParam(value="schoolClass", required=false) String classId,
     		Model model, HttpSession session) {    	
     	if (session.getAttribute("userLogin") == null)
     		return "redirect:/Login";
     	
-    	DatabaseConnector.getInstance().updateStudent(studentId, name, surname, pesel);    	
+    	DatabaseConnector.getInstance().updateStudent(studentId, name, surname, pesel, classId);    	
        	model.addAttribute("students", DatabaseConnector.getInstance().getStudents());
     	model.addAttribute("message", "Dane ucznia zostały zaktualizowane");
          	

@@ -14,12 +14,21 @@
       <th>Id</th>
       <th>Nazwa</th>
       <th>Adres</th>
+      <th>Klasy</th>
       <th>Akcje</th>
     </tr>
     <tr th:each="school: ${schools}">
       <td><span th:text="${school.id}"/></td>
       <td><span th:text="${school.name}"/></td>
       <td><span th:text="${school.address}"/></td>
+      <td>
+        <ol>
+          <li th:each="schoolClass : ${school.classes}"
+                th:object="${schoolClass}">
+            <span th:text="*{profile}"></span>
+          </li>
+        </ol>
+      </td>
       <td>
         <form action="ModifySchool" method="POST">
           <input type="hidden" name="schoolId" th:value="${school.id}"/>

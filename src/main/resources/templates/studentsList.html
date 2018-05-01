@@ -22,7 +22,6 @@
       <td><span th:text="${student.name}"/></td>
       <td><span th:text="${student.surname}"/></td>
       <td><span th:text="${student.pesel}"/></td>
-      
       <td>
         <form action="ModifyStudent" method="POST">
           <input type="hidden" name="studentId" th:value="${student.id}"/>

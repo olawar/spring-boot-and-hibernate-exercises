@@ -20,6 +20,7 @@ public class SchoolClassesController {
     		return "redirect:/Login";
 
     	model.addAttribute("schoolClasses", DatabaseConnector.getInstance().getSchoolClasses());
+    	model.addAttribute("schools", DatabaseConnector.getInstance().getSchools());
 
         return "schoolClassesList";    
     }
@@ -29,24 +30,28 @@ public class SchoolClassesController {
     	if (session.getAttribute("userLogin") == null)
     		return "redirect:/Login";
     	
+       	model.addAttribute("schools", DatabaseConnector.getInstance().getSchools());
+        	
         return "schoolClassForm";    
     }
 
     @RequestMapping(value="/CreateSchoolClass", method=RequestMethod.POST)
-    public String createSchoolClass(@RequestParam(value="schoolClassProfile", required=false) String profile,
-    		@RequestParam(value="schoolClassStartYear", required=true) int startYear,
-    		@RequestParam(value="schoolClassCurrentYear", required=true) int currentYear,
+    public String createSchoolClass(@RequestParam(value="schoolClassStartYear", required=false) String startYear,
+    		@RequestParam(value="schoolClassCurrentYear", required=false) String currentYear,
+    		@RequestParam(value="schoolClassProfile", required=false) String profile,
+    		@RequestParam(value="schoolClassSchool", required=false) String schoolId,
     		Model model, HttpSession session) {    	
     	if (session.getAttribute("userLogin") == null)
     		return "redirect:/Login";
     	
     	SchoolClass schoolClass = new SchoolClass();
+    	schoolClass.setStartYear(Integer.valueOf(startYear));
+    	schoolClass.setCurrentYear(Integer.valueOf(currentYear));
     	schoolClass.setProfile(profile);
-    	schoolClass.setStartYear(startYear);
-    	schoolClass.setCurrentYear(currentYear);
     	
-    	DatabaseConnector.getInstance().addSchoolClass(schoolClass);    	
+    	DatabaseConnector.getInstance().addSchoolClass(schoolClass, schoolId);    	
        	model.addAttribute("schoolClasses", DatabaseConnector.getInstance().getSchoolClasses());
+    	model.addAttribute("schools", DatabaseConnector.getInstance().getSchools());
     	model.addAttribute("message", "Nowa klasa została dodana");
          	
     	return "schoolClassesList";
@@ -60,6 +65,7 @@ public class SchoolClassesController {
     	
     	DatabaseConnector.getInstance().deleteSchoolClass(schoolClassId);    	
        	model.addAttribute("schoolClasses", DatabaseConnector.getInstance().getSchoolClasses());
+       	model.addAttribute("schools", DatabaseConnector.getInstance().getSchools());
     	model.addAttribute("message", "Klasa została usunięta");
          	
     	return "schoolClassesList";
@@ -72,6 +78,7 @@ public class SchoolClassesController {
     		return "redirect:/Login";
     	
     	model.addAttribute("schoolClass", DatabaseConnector.getInstance().getSchoolClass(schoolClassId));
+    	model.addAttribute("schools", DatabaseConnector.getInstance().getSchools());
     	
     	return "schoolClassModifyForm";
     }
@@ -81,12 +88,14 @@ public class SchoolClassesController {
     		@RequestParam(value="schoolClassStartYear", required=false) int startYear,
     		@RequestParam(value="schoolClassCurrentYear", required=false) int currentYear,
     		@RequestParam(value="schoolClassId", required=false) String schoolClassId,
+    		@RequestParam(value="schoolClassSchool", required=false) String schoolId,
     		Model model, HttpSession session) {    	
     	if (session.getAttribute("userLogin") == null)
     		return "redirect:/Login";
     	
-    	DatabaseConnector.getInstance().updateSchoolClass(schoolClassId, profile, startYear, currentYear);    	
+    	DatabaseConnector.getInstance().updateSchoolClass(schoolClassId, profile, startYear, currentYear, schoolId);    	
        	model.addAttribute("schoolClasses", DatabaseConnector.getInstance().getSchoolClasses());
+    	model.addAttribute("schools", DatabaseConnector.getInstance().getSchools());
     	model.addAttribute("message", "Dane klasy zostały zaktualizowane");
          	
     	return "schoolClassesList";

@@ -21,7 +21,7 @@ public class SchoolClass implements java.io.Serializable {
 	@Column
 	private String profile;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="class_id")
 	private Set<Student> students;
 

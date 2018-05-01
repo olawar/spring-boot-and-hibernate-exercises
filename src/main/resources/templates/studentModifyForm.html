@@ -20,10 +20,14 @@
         <td>PESEL:</td>
         <td><input type="text" name="studentPesel" th:value="${student.pesel}"/></td>
       </tr>
+      <tr><td>klasa:</td><td><select class="form-control" name="schoolClass" id="schoolClass">
+        <option value="-1">---</option>
+        <option th:each="schoolClass: ${schoolClasses}" th:value="${schoolClass.id}" th:text="${schoolClass.profile}"></option>
+      </select></td></tr>
     </table>
     <br/><br/>
     <input type="hidden" name="studentId" th:value="${student.id}"/>
-    <input type="submit" value="Utwórz"/>
+    <input type="submit" value="Aktualizuj"/>
   </form>
 </div>
 
