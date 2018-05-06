@@ -107,10 +107,20 @@ public class DatabaseConnector {
 		Query query2 = session.createQuery(hql2);
 		List<School> results = query2.list();
 		
+		String hql3 = "FROM School";
+		Query query3 = session.createQuery(hql3);
+		List<School> allSchools = query3.list();
+		
 		Transaction transaction = session.beginTransaction();
+		
+		for(School schoolAll : allSchools) {
+			schoolAll.removeClass(schoolClass);
+			session.save(schoolAll);
+		}
+		
 		if (results.size() == 0) {
 			session.update(schoolClass);
-		} else {
+		} else {			
 			School school = results.get(0);
 			school.addClass(schoolClass);
 			session.save(school);
@@ -130,7 +140,17 @@ public class DatabaseConnector {
 		Query query2 = session.createQuery(hql2);
 		List<SchoolClass> results = query2.list();
 		
+		String hql3 = "FROM SchoolClass";
+		Query query3 = session.createQuery(hql3);
+		List<SchoolClass> allSchoolClasses = query3.list();
+		
 		Transaction transaction = session.beginTransaction();
+		
+		for(SchoolClass classAll : allSchoolClasses) {
+			classAll.removeStudent(student);
+			session.save(classAll);
+		}
+		
 		if (results.size() == 0) {
 			session.update(student);
 		} else {

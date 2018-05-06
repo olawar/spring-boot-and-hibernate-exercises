@@ -39,6 +39,10 @@ public class SchoolClass implements java.io.Serializable {
 	public void addStudent(Student newStudent) {
 		students.add(newStudent);
 	}
+	
+	public void removeStudent(Student newStudent) {
+		students.remove(newStudent);
+	}
 
 	public long getId() {
 		return id;
